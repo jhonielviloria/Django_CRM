@@ -16,6 +16,11 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def orders(self):
+        order_count = self.order_set.all().count()
+        return str(order_count)
+
 class Order(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'pending'),
