@@ -47,14 +47,16 @@ Home
             <h3>Customers: {{ total_customer }} </h3>
             <hr>
             <div class="card card-body">
-                <a href="{% url "create_customer" %}" class="btn btn-info" role="button"><h5>Create Customer</h5></a>
+                <a href="{% url "create_customer" %}" class="btn btn-primary" role="button"><h5>Create Customer</h5></a>
                 <table class="table table-striped">
                     <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Orders</th>
                     </tr>
                     {% for customer in customer_list %}
                         <tr>
+                            <td><a href="{% url 'customer_info' customer.id %}" class="btn btn-info">view</a></td>
                             <td>{{ customer.name }}</td>
                             <td>{{ customer.orders }} </td>
                         </tr>
@@ -66,7 +68,7 @@ Home
             <h3>Last 5 Orders</h3>
             <hr>
             <div class="card card-body">
-                <h5><a href="{% url "create_order" %}" class="btn btn-info" role="button">Add Order</a></h5>
+                <h5><a href="{% url "create_order" %}" class="btn btn-primary" role="button">Add Order</a></h5>
                 <table class="table table-striped">
                     <tr>
                         <th>Product</th>
@@ -80,8 +82,8 @@ Home
                             <td>{{ order.item }}</td>
                             <td>{{ order.created }} </td>
                             <td>{{ order.status }} </td>
-                            <td><a href="{% url "update_order" order.id %}">Update</a></td>
-                            <td><a href="">Remove</a></td>
+                            <td><a href="{% url "update_order" order.id %}" class="btn btn-info" >Update</a></td>
+                            <td><a href="" class="btn btn-danger">Remove</a></td>
                         </tr>
                     {% endfor %}
                 </table>

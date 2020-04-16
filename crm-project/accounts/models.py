@@ -20,6 +20,10 @@ class Customer(models.Model):
     def orders(self):
         order_count = self.order_set.all().count()
         return str(order_count)
+    @property
+    def orders_info(self):
+        order = self.order_set.all()
+        return str(order)
 
 class Order(models.Model):
     STATUS_CHOICES = (

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Product, Customer, Order
 from .forms import CreateCustomerForm, OrderForm, ProductForm
+from .filters import OrderFilter
 # Create your views here.
 
 def dashboard(request):
@@ -43,18 +44,20 @@ def create_customer(request):
     }
     return render(request, 'accounts/create_customer.html', context)
 
-def create_order(request):
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/home')
-    else:
-        form = OrderForm()
+def customer_info(request, pk):
+    customer = Customer.objects.get(id=pk)
+
+    orders = customer.order_set.all()
+    # total_orders = orders.count()
+
+    orderFilter = OrderFilter(request.GET, queryset=orders)
+    orders = orderFilter.qs
     context = {
-        'form': form
+        'customer': customer,
+        'orders': orders,
     }
-    return render(request, 'accounts/create_order.html', context)
+    return render(request, 'accounts/customer_info.html', context)
+
 
 def create_product(request):
     if request.method == 'POST':
@@ -69,6 +72,20 @@ def create_product(request):
     }
     return render(request, 'accounts/create_product.html', context)
 
+def create_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/home')
+    else:
+        form = OrderForm()
+    context = {
+        'form': form,
+        'action': 'create',
+    }
+    return render(request, 'accounts/order_form.html', context)
+
 def update_order(request, pk):
     order = Order.objects.get(id=pk)
     form = OrderForm(instance=order)
@@ -80,6 +97,7 @@ def update_order(request, pk):
             return redirect('/home')
 
     context = {
-               'form': form,
+        'form': form,
+        'action': 'update',
     }
-    return render(request, 'accounts/update_order.html', context)
+    return render(request, 'accounts/order_form.html', context)
