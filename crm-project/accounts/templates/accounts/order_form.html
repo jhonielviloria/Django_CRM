@@ -30,6 +30,7 @@
             	{% csrf_token %}
 				{{ form.as_p }}
 				<hr>
+				<input type="hidden" name="prev_page" value="{{ request.GET.next }}">
 				<input type="submit" class="btn btn-info">
 			</form>
 		</div>

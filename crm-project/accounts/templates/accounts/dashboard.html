@@ -82,7 +82,7 @@ Home
                             <td>{{ order.item }}</td>
                             <td>{{ order.created }} </td>
                             <td>{{ order.status }} </td>
-                            <td><a href="{% url "update_order" order.id %}" class="btn btn-info" >Update</a></td>
+                            <td><a href="{% url "update_order" order.id %}?next={{ request.path|urlencode }}" class="btn btn-info" >Update</a></td>
                             <td><a href="" class="btn btn-danger">Remove</a></td>
                         </tr>
                     {% endfor %}

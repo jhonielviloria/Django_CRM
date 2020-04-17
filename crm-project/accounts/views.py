@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from .models import Product, Customer, Order
 from .forms import CreateCustomerForm, OrderForm, ProductForm
 from .filters import OrderFilter
@@ -91,10 +91,11 @@ def update_order(request, pk):
     form = OrderForm(instance=order)
 
     if request.method == 'POST':
+        prev_page = request.POST.get('prev_page')
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
-            return redirect('/home')
+            return redirect(prev_page)
 
     context = {
         'form': form,
